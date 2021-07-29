@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url('../image/1.jpg');
+}
+.contacts {
+    display: flex;
+    
+}
+
+.contacts__form {
+    background-image: url('../image/2.jpeg');
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 400px;
+    margin: 100px;
+    border: 1px solid black;
+    
+}
+.contacts__inp {
+    width: 200px;
+    height: 25px;
+    font-size: 14px;
+    margin-left: 20px;
+    margin-top: 20px;
+    
+}
+
+.contacts__list {
+    background-image: url('../image/3.jpeg');
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 400px;
+    margin: 100px;
+    border: 1px solid black;
+    
+}
+
+.contacts__item {
+    margin-top: 20px;
+    display: flex;
+}
+
+.contacts__container {
+    display: flex;
+    flex-basis: 250px;
+    padding: 20px;
+}
+
+.contacts__btn {
+    margin-left: 20px;
+    margin-right: 10px;
+    width: 60px;
+    height: 30px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.contacts__btn:hover {
+    background-color: aqua;
+}
+.contacts__btn:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.contacts__send {
+    width: 60px;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 30px;
+    cursor: pointer;
+}
+.contacts__send:hover {
+    background-color: aqua;
+}
