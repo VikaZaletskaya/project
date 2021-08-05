@@ -19,13 +19,13 @@ class Contacts {
     }
     edit(id, obj) {
         let user = this.data.find(function(item) {
-          return item.get().id === id
+          return item.get().id == id
         });
         user.edit(obj);
     }
     remove(id) {
         this.data = this.data.filter(function(item) {
-            return item.get().id !== id
+            return item.get().id != id
         });
     }
 
@@ -35,10 +35,36 @@ class ContactsApp extends Contacts {
     constructor() {
         super();
         this.init();
+        
+    }
+    getData = function getRequest() {
+            let url = 'https://jsonplaceholder.typicode.com/users';
+
+            fetch(url)
+            .then((response)=>response.json())
+            .then((apiData) => {
+                let arrApiData = [] 
+                apiData.forEach((apiItem) => {
+                    arrApiData.push(new User (
+                    {
+                        id: apiItem.id,
+                        firstName: apiItem.name,
+                        address: apiItem.address.city,
+                        phoneNumber: apiItem.phone,
+                        email: apiItem.email,
+                    }
+                    ))
+                })
+                this.data = [...arrApiData];
+                this.updateList();
+            console.log(arrApiData);
+            })
     }
     getStorage() {
         const dataString = localStorage.getItem('contactsData');
         const data = JSON.parse(dataString) || [];
+
+
 
         data.forEach((item) => {
             this.add(item.data);
@@ -50,6 +76,13 @@ class ContactsApp extends Contacts {
     }
     init() {
         this.getStorage();
+        if (!this.data.length) {
+            this.getData();
+        }
+
+        const contactsH1 = document.createElement('h1');
+        contactsH1.classList.add('contacts__h1');
+        contactsH1.innerHTML = 'Contacts Book';
 
         const contactsElem = document.createElement('div');
         contactsElem.classList.add('contacts');
@@ -65,25 +98,21 @@ class ContactsApp extends Contacts {
         this.idInput.classList.add('contacts__inp');
         this.idInput.setAttribute('placeholder', 'Введите id');
 
-        this.lastNameInput = document.createElement('input');
-        this.lastNameInput.setAttribute('name', 'contacts_add');
-        this.lastNameInput.classList.add('contacts__inp');
-        this.lastNameInput.setAttribute('placeholder', 'Введите фамилию');
         
         this.firstNameInput = document.createElement('input');
         this.firstNameInput.setAttribute('name', 'contacts_add');
         this.firstNameInput.classList.add('contacts__inp');
         this.firstNameInput.setAttribute('placeholder', 'Введите имя');
 
-        this.phoneNumberInput = document.createElement('input');
-        this.phoneNumberInput.setAttribute('name', 'contacts_add');
-        this.phoneNumberInput.classList.add('contacts__inp');
-        this.phoneNumberInput.setAttribute('placeholder', 'Введите телефон');
-
         this.addressInput = document.createElement('input');
         this.addressInput.setAttribute('name', 'contacts_add');
         this.addressInput.classList.add('contacts__inp');
         this.addressInput.setAttribute('placeholder', 'Ваш адрес');
+
+        this.phoneNumberInput = document.createElement('input');
+        this.phoneNumberInput.setAttribute('name', 'contacts_add');
+        this.phoneNumberInput.classList.add('contacts__inp');
+        this.phoneNumberInput.setAttribute('placeholder', 'Введите телефон');
 
         this.emailInput = document.createElement('input');
         this.emailInput.setAttribute('name', 'contacts_add');
@@ -93,31 +122,28 @@ class ContactsApp extends Contacts {
         this.contactsBtnAdd = document.createElement('button');
         this.contactsBtnAdd.innerHTML = 'Send';
         this.contactsBtnAdd.classList.add('contacts__send');
-        
+
+        document.body.appendChild(contactsH1);
         contactsElem.appendChild(contactsForm);
         contactsForm.appendChild(this.idInput);
-        contactsForm.appendChild(this.lastNameInput);
         contactsForm.appendChild(this.firstNameInput);
-        contactsForm.appendChild(this.phoneNumberInput);
         contactsForm.appendChild(this.addressInput);
+        contactsForm.appendChild(this.phoneNumberInput);
         contactsForm.appendChild(this.emailInput);
         contactsForm.appendChild(this.contactsBtnAdd);
         contactsElem.appendChild(this.contactsList);
         document.body.appendChild(contactsElem);
 
-        this.lastNameInput.addEventListener('keyup', event => {
-            this.onAdd(event);
-        });
 
         this.firstNameInput.addEventListener('keyup', event => {
             this.onAdd(event);
         });
 
-        this.phoneNumberInput.addEventListener('keyup', event => {
+        this.addressInput.addEventListener('keyup', event => {
             this.onAdd(event);
         });
 
-        this.addressInput.addEventListener('keyup', event => {
+        this.phoneNumberInput.addEventListener('keyup', event => {
             this.onAdd(event);
         });
 
@@ -151,12 +177,10 @@ class ContactsApp extends Contacts {
         });
 
         this.idInput.value = note.data.id;
-        this.lastNameInput.value = note.data.lastName;
         this.firstNameInput.value = note.data.firstName;
-        this.phoneNumberInput.value = note.data.phoneNumber;
         this.addressInput.value = note.data.address;
+        this.phoneNumberInput.value = note.data.phoneNumber;
         this.emailInput.value = note.data.email;
-
         this.idInput.dataset.action = 'edit';
         this.idInput.dataset.id = id;
     }
@@ -177,26 +201,22 @@ class ContactsApp extends Contacts {
             const idElement = document.createElement('div');
             idElement.innerHTML = user.data.id;
 
-            const lastNameElement = document.createElement('div');
-            lastNameElement.innerHTML = user.data.lastName;
-
             const firstNameElement = document.createElement('div');
             firstNameElement.innerHTML = user.data.firstName;
 
-            const phoneNumberElement = document.createElement('div');
-            phoneNumberElement.innerHTML = user.data.phoneNumber;
-
             const addressElement = document.createElement('div');
             addressElement.innerHTML = user.data.address;
+
+            const phoneNumberElement = document.createElement('div');
+            phoneNumberElement.innerHTML = user.data.phoneNumber;
 
             const emailElement = document.createElement('div');
             emailElement.innerHTML = user.data.email;
 
             contactsContainer.appendChild(idElement);
-            contactsContainer.appendChild(lastNameElement);
             contactsContainer.appendChild(firstNameElement);
-            contactsContainer.appendChild(phoneNumberElement);
             contactsContainer.appendChild(addressElement);
+            contactsContainer.appendChild(phoneNumberElement);
             contactsContainer.appendChild(emailElement);
 
             const buttonsContainer = document.createElement('div');
@@ -233,10 +253,9 @@ class ContactsApp extends Contacts {
 
         const data = {
             id: this.idInput.value,
-            lastName: this.lastNameInput.value,
             firstName: this.firstNameInput.value,
-            phoneNumber: this.phoneNumberInput.value,
             address: this.addressInput.value,
+            phoneNumber: this.phoneNumberInput.value,
             email: this.emailInput.value,
         }
 
@@ -251,10 +270,9 @@ class ContactsApp extends Contacts {
         this.updateList();
 
         this.idInput.value = '';
-        this.lastNameInput.value = '';
         this.firstNameInput.value = '';
-        this.phoneNumberInput.value = '';
         this.addressInput.value = '';
+        this.phoneNumberInput.value = '';
         this.emailInput.value = '';
     }
 }

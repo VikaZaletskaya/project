@@ -4,11 +4,14 @@
 }
 
 body {
-    background-image: url('../image/1.jpg');
+    background-color: #4682B4;
 }
-.contacts {
-    display: flex;
-    
+
+.contacts__h1 {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 50px;
+    font-family: 'Palette Mosaic', cursive;
 }
 
 .contacts__form {
@@ -17,7 +20,7 @@ body {
     flex-direction: column;
     width: 600px;
     height: 400px;
-    margin: 100px;
+    margin: 50px auto;
     border: 1px solid black;
     
 }
@@ -29,15 +32,18 @@ body {
     margin-top: 20px;
     
 }
-
-.contacts__list {
+.contacts__item {
     background-image: url('../image/3.jpeg');
     display: flex;
     flex-direction: column;
-    width: 600px;
-    height: 400px;
-    margin: 100px;
+    width: 400px;
+    height: 300px;
+    margin: 50px auto;
     border: 1px solid black;
+}
+
+.buttons__container {
+    margin: 0 auto;
     
 }
 
@@ -47,9 +53,17 @@ body {
 }
 
 .contacts__container {
-    display: flex;
+    
     flex-basis: 250px;
     padding: 20px;
+    font-size: 20px;
+    margin:0 auto;
+    font-family: cursive;
+  
+}
+.contacts__container div:not(:last-child) {
+   margin-right: 10px;
+   margin-bottom: 10px;
 }
 
 .contacts__btn {
